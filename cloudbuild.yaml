@@ -24,7 +24,7 @@ steps:
       echo "$BRANCH_NAME"
       echo "***********************"
       echo "***********************"
-      echo "$_TERRAFORM_BASE
+      echo "$_TERRAFORM_BASE"
       echo "***********************"
       
 - id: 'tf init'
