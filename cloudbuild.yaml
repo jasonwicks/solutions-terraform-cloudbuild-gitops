@@ -23,9 +23,17 @@ steps:
       echo "***********************"
       echo "$BRANCH_NAME"
       echo "***********************"
-      echo "***********************"
       echo "$_TERRAFORM_BASE"
       echo "***********************"
+      echo "$_HEAD_BRANCH"
+      echo "***********************"
+      echo "$_BASE_BRANCH"
+      echo "***********************"
+      echo "$_HEAD_REPO_URL"
+      echo "***********************"
+      echo "$_PR_NUMBER"
+      echo "***********************"
+
       
 - id: 'tf init'
   name: 'hashicorp/terraform:0.11.14'
