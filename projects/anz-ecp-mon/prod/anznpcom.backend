@@ -1,0 +1,2 @@
+# backend config
+BACKEND_BUCKET = "tarraform-state-3c5c8f00e1e7"
