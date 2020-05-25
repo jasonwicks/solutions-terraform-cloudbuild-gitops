@@ -17,7 +17,7 @@ resource "google_cloudbuild_trigger" "trigger" {
   ignored_files  = ["projects/anz-team-app/prod/**/*"]  # Ignore any changes to production folder to avoid kicking off pipeline when commits don't impact nonprod folder.
    
   trigger_template {
-    branch_name = "dev"                     # We can execute trigger for all code changes, and determine in cloudbuild.yaml file to either plan or plan and apply
+    branch_name = ".*"                     # We can execute trigger for all code changes, and determine in cloudbuild.yaml file to either plan or plan and apply
     repo_name   = "${var.repository}"
   }
  
