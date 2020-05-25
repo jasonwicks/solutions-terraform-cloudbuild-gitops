@@ -6,7 +6,7 @@ locals {
 module "project" {
   source = "git::https://github.service.anz/ics/terraform-gcp-modules.git//project?ref=project/2.2.1"
 
-  app_name          = "cloudbuild-poc-3"
+  app_name          = "cloudbuild-poc-4"
   bsb_cc            = "39970246"
   environment       = "${local.env}"
   project_name      = "jw-ecp-cb-${var.suffix}"
