@@ -52,5 +52,5 @@ steps:
       which terraform
       which git
       echo "running: git diff-tree --no-commit-id --name-only -r ${SHORT_SHA}"
-      git diff-tree --no-commit-id --name-only -r ${SHORT_SHA}
+      git diff-tree --no-commit-id --name-only -r ${SHORT_SHA} 2>&1
       echo "Completed git output"
