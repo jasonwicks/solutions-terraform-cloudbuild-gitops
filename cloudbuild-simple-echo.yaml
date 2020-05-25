@@ -40,5 +40,5 @@ steps:
       pwd
       ls -la
       df -h
-      echo $PATH
+      env
       which terraform
