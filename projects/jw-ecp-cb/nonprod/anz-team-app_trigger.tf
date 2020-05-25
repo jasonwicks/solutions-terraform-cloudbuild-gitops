@@ -29,5 +29,6 @@ resource "google_cloudbuild_trigger" "trigger" {
     _RUN_TERRAFORM_APPLY     = "1"                         #
     _TERRAFORM_VERSION       = "${var.terraform_version}"  # Selects version of terraform to run.  Currently 11.8
     _GCP_ORG                 = "${var.organisation}"                # GCP org - anzcom, anznpcom, onedirect
+    _BACKEND                 = "anzod-tf-state-931373029707"
   }
 }

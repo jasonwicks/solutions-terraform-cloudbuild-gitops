@@ -1,0 +1,78 @@
+substitutions:
+  _TERRAFORM_VERSION: ${_TERRAFORM_VERSION}
+  _ENVIRONMENT:
+ 
+tags:
+  - artifactory
+  - terraform
+ 
+options:
+  workerPool: anz-cx-cloudbuild-dev-5ef683/custom-workers-dev-pool
+ 
+steps:
+ 
+# # Step 1: pull and decrypt the Artifactory API key using KMS
+# - name: asia.gcr.io/${PROJECT_ID}/terraform-cloudbuilder:${_TERRAFORM_VERSION}
+#   entrypoint: bash
+#   dir: secrets/${_ENVIRONMENT}
+#   args:
+#     - '-c'
+#     - |
+#       make -f ../../common/Makefile terraform-sa-key.json.plain
+#   env:
+#     - GCP_PROJECT_ID=${PROJECT_ID}
+ 
+# Step 3: terraform init (to project specific state bucket)
+- name: asia.gcr.io/${PROJECT_ID}/terraform-cloudbuilder:${_TERRAFORM_VERSION}
+  dir: triggers
+  args: [
+    'init',
+    '-input=false',
+    '-reconfigure',
+    '-get-plugins=false',
+    '-plugin-dir=/terraform.d/plugins',
+    '-backend-config=bucket=${PROJECT_ID}-automation-terraform-state',
+  ]
+  env:
+    - GOOGLE_APPLICATION_CREDENTIALS=/workspace/secrets/${_ENVIRONMENT}/terraform-sa-key.json.plain
+ 
+# Step 4: print environment info
+- name: asia.gcr.io/${PROJECT_ID}/terraform-cloudbuilder:${_TERRAFORM_VERSION}
+  entrypoint: bash
+  dir: triggers
+  args:
+  - '-c'
+  - |
+    terraform version
+    terraform providers
+    gcloud version
+# Disabling this step on private cloud build workers, because it accesses registry.terraform.io.
+# # Step 5: display checklist for 0.12 readiness
+# - name: asia.gcr.io/${PROJECT_ID}/terraform-cloudbuilder:${_TERRAFORM_VERSION}
+#   dir: triggers
+#   args: ['0.12checklist']
+ 
+# Step 6: terraform plan
+- name: asia.gcr.io/${PROJECT_ID}/terraform-cloudbuilder:${_TERRAFORM_VERSION}
+  dir: triggers
+  args: [
+    'plan',
+    '-input=false',
+    '-var',
+    'project_id=${PROJECT_ID}',
+    '-var-file=${_ENVIRONMENT}.tfvars',
+    '-var', 'environment=${_ENVIRONMENT}',
+    '-out=tfplan',
+  ]
+  env:
+    - GOOGLE_APPLICATION_CREDENTIALS=/workspace/secrets/${_ENVIRONMENT}/terraform-sa-key.json.plain
+ 
+# Step 7: terraform apply
+- name: asia.gcr.io/${PROJECT_ID}/terraform-cloudbuilder:${_TERRAFORM_VERSION}
+  dir: triggers
+  args: [
+    'apply',
+    '-input=false',
+    'tfplan',
+  ]
+  env:

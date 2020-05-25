@@ -41,3 +41,4 @@ steps:
   - '-c'
   - |
       echo "hello world"
+      ls -la
