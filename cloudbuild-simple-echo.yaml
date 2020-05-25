@@ -41,4 +41,6 @@ steps:
   - '-c'
   - |
       echo "hello world"
+      pwd
       ls -la
+      df -h
