@@ -1,4 +1,6 @@
 module "jw-ecp-cb" {
+  # Add comment
+  
   source = "../modules/common"
 
   suffix  = "${var.suffix}"
