@@ -13,8 +13,8 @@ resource "google_cloudbuild_trigger" "trigger" {
   ** Note: ** is a recursive version of * which matches all files and directories in the selected directory and its subdirectories.
   ** For example, the pattern src/* will match src/code.py, but will ignore src/sub/code.py whereas src/** will match both.
   */
-  included_files = ["projects/anz-team-app/**/*"]
-  ignored_files  = ["projects/anz-team-app/prod/**/*"]  # Ignore any changes to production folder to avoid kicking off pipeline when commits don't impact nonprod folder.
+  included_files = ["projects/anz-team-app/**"]
+  ignored_files  = ["projects/anz-team-app/prod/**"]  # Ignore any changes to production folder to avoid kicking off pipeline when commits don't impact nonprod folder.
    
   trigger_template {
     branch_name = ".*"                     # We can execute trigger for all code changes, and determine in cloudbuild.yaml file to either plan or plan and apply
