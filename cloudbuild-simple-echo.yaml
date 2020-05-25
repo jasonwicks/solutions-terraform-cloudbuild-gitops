@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 tags:
+  - ${_PROJECT_ID}
   - simple-echo-yaml
   - terraform
-  - ${_PROJECT_ID}
-
-
+  
 
 steps:
 - id: 'branch name'
@@ -51,4 +50,5 @@ steps:
       df -h
       env
       which terraform
+      which git
       git diff-tree --no-commit-id --name-only -r ${SHORT_SHA}
