@@ -24,7 +24,7 @@ resource "google_cloudbuild_trigger" "trigger_jw-ecp-cb" {
  
   # Below is an example of how to pass variables into the cloudbuild.yaml file to add more powerful logic.
   substitutions = {
-    _PROJECT_ID              = "module.project.project_id"
+    _PROJECT_ID              = "${module.jw-ecp-cb.project_id}"
     _PROJECT                 = "project/jw-ecp-cb"      # path to project directory
     _ENVDIR                  = "${var.envdir}"             # prod or nonprod
     _RUN_TERRAFORM_APPLY     = "1"                         #
