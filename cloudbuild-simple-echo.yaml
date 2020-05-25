@@ -14,7 +14,7 @@
 tags:
   - simple-echo-yaml
   - terraform
-  - ${_PROJECT}
+  - ${_PROJECT_ID}
 
 
 
