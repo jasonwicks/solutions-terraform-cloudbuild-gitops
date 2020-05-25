@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 tags:
-  - testing
+  - simple-echo-yaml
   - terraform
 
 
@@ -35,6 +35,7 @@ steps:
       echo "_BACKEND: ${_BACKEND}"
       echo "COMMIT: ${SHORT_SHA}"
 
+
       
 - id: 'say hi'
   name: 'hashicorp/terraform:0.11.14'
@@ -48,3 +49,4 @@ steps:
       df -h
       env
       which terraform
+      git diff-tree --no-commit-id --name-only -r ${SHORT_SHA}
