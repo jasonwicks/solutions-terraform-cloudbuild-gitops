@@ -13,7 +13,7 @@ resource "google_cloudbuild_trigger" "trigger_project_bootstrap" {
   included_files = ["projects/**/platform_pipeline/**"]
 
   trigger_template {
-    branch_name = ".*"                # We can execute trigger for all code changes, and determine in cloudbuild.yaml file to either plan or plan and apply
+    branch_name = "^master$"                # We can execute trigger for all code changes, and determine in cloudbuild.yaml file to either plan or plan and apply
     repo_name   = "${var.repository}"
   }
 

@@ -29,6 +29,7 @@ steps:
       echo "Running on branch: $BRANCH_NAME"
       echo "***********************"
       echo "_PROJECT: ${_PROJECT}"
+      echo "_PROJECT: ${_PROJECT_ID}"
       echo "_ENVDIR: ${_ENVDIR}"
       echo "_RUN_TERRAFORM_APPLY: ${_RUN_TERRAFORM_APPLY}"
       echo "_TERRAFORM_VERSION: ${_TERRAFORM_VERSION}"
