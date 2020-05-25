@@ -1,0 +1,100 @@
+steps:
+- id: 'branch name'
+  name: 'alpine'
+  entrypoint: 'sh' 
+  args:
+  - '-c'
+  - |
+      echo "***********************"
+      echo "Running on branch: $BRANCH_NAME"
+      echo "***********************"
+      echo "_PROJECT: ${_PROJECT}"
+      echo "_ENVDIR: ${_ENVDIR}"
+      echo "_RUN_TERRAFORM_APPLY: ${_RUN_TERRAFORM_APPLY}"
+      echo "_TERRAFORM_VERSION: ${_TERRAFORM_VERSION}"
+      echo "_GCP_ORG: ${_GCP_ORG}"
+      echo "_BACKEND: ${_BACKEND}"
+      ls -la
+ 
+       
+- id: 'tf init'
+  #
+  # Using the _TERRAFORM_VERSION substitution here to avoid hard coding - and to provide flexibility for using different tf versions for different components.
+  #
+  name: 'hashicorp/terraform:${_TERRAFORM_VERSION}'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+     /*
+     ** Looping through all environments in the same directory.  This means all nonprod environments will
+     ** get run at the same time, and all environments defined in prod will get run at the same time. 
+     ** Need to determine if this is what we want to do - or if we want to put dependancies on dev first, then stage, then qa, etc.
+     */
+       cd ${_PROJECT}/${_ENVDIR}  
+       echo ""
+       echo "*************** TERRAFORM INIT ******************"
+       echo "******* For environment tfvar file: ${tfvars} ********"
+       echo "*************************************************"
+       # ./terraform init -backend-config=bucket="anzod-tf-state-931373029707" -backend-config=prefix=projects/jw-ecp-cb -reconfigure -get=false || exit 1
+       terraform init -backend-config=bucket=${_BACKEND} -backend-config=prefix=$(TIER) -reconfigure -get=false || exit 1
+       cd ../../
+     
+ 
+# [START tf-plan]
+- id: 'tf plan'
+  name: 'hashicorp/terraform:${_TERRAFORM_VERSION}'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+     /*
+     ** Looping through all environments in the same directory.  This means all nonprod environments will
+     ** get run at the same time, and all environments defined in prod will get run at the same time. 
+     ** Need to determine if this is what we want to do - or if we want to put dependancies on dev first, then stage, then qa, etc.
+     */
+     for tfvars in ${_PROJECT}/${_ENVDIR}/${_GCP_ORG}-*.tfvars
+     do
+       cd ${_PROJECT}/${_ENVDIR}  
+       echo ""
+       echo "*************** TERRAFORM PLAN ******************"
+       echo "******* For environment tfvar file: ${tfvars} ********"
+       echo "*************************************************"
+        
+       # ./terraform plan -var-file onedirect-nonprod.tfvars -out /workspace/onedirect-nonprod-projects-jw-ecp-cb.tfstate -parallelism=50
+
+       terraform plan goes here|| exit 1
+       cd ../../
+     done
+ 
+# [END tf-plan]
+# [START tf-apply]
+- id: 'tf apply'
+  name: 'hashicorp/terraform:${_TERRAFORM_VERSION}'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+     /*
+     ** Looping through all environments in the same directory.  This means all nonprod environments will
+     ** get run at the same time, and all environments defined in prod will get run at the same time. 
+     ** Need to determine if this is what we want to do - or if we want to put dependancies on dev first, then stage, then qa, etc.
+     */
+     for tfvars in ${_PROJECT}/${_ENVDIR}/${_GCP_ORG}-*.tfvars
+     do
+       cd ${_PROJECT}/${_ENVDIR}  
+       echo ""
+       echo "*************** TERRAFORM INIT ******************"
+       echo "******* For environment tfvar file: ${tfvars} ********"
+       echo "*************************************************"
+        
+       # TODO: Generate the correct terraform apply command using backend, tfvars file, etc. and saving output to file for use in next stage ?      if [ -d "environments/$BRANCH_NAME/" ]; then
+ 
+ 
+        terraform apply goes here -auto-approve   <- using manifest from previous plan step.
+      else
+        echo "***************************** SKIPPING APPLYING *******************************"
+        echo "Branch '$BRANCH_NAME' does not represent an oficial environment."
+        echo "*******************************************************************************"
+      fi
+# [END tf-apply]

@@ -38,3 +38,7 @@ variable "envdir" {
 variable "terraform_version" {
   description = "string of terraform binary to use"
 }
+
+variable "build_project" {
+  description = "Central cloud build project for ECP"
+}
