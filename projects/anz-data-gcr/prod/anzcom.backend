@@ -1,2 +1,0 @@
-# backend config
-BACKEND_BUCKET = "terraform-state-9567ba007f2c"
