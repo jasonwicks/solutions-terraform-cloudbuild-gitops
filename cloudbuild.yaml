@@ -13,6 +13,7 @@ steps:
       echo "_RUN_TERRAFORM_APPLY: ${_RUN_TERRAFORM_APPLY}"
       echo "_TERRAFORM_VERSION: ${_TERRAFORM_VERSION}"
       echo "_GCP_ORG: ${_GCP_ORG}"
+      echo "_BACKEND: ${_BACKEND}"
       ls -la
  
        
@@ -30,17 +31,15 @@ steps:
      ** get run at the same time, and all environments defined in prod will get run at the same time. 
      ** Need to determine if this is what we want to do - or if we want to put dependancies on dev first, then stage, then qa, etc.
      */
-     for tfvars in ${_PROJECT}/${_ENVDIR}/${_GCP_ORG}-*.tfvars
-     do
        cd ${_PROJECT}/${_ENVDIR}  
        echo ""
        echo "*************** TERRAFORM INIT ******************"
        echo "******* For environment tfvar file: ${tfvars} ********"
        echo "*************************************************"
-       # ./terraform plan -var-file onedirect-nonprod.tfvars -out onedirect-nonprod-projects-jw-ecp-cb.tfstate -parallelism=50
+       # ./terraform init -backend-config=bucket="anzod-tf-state-931373029707" -backend-config=prefix=projects/jw-ecp-cb -reconfigure -get=false || exit 1
        terraform init -backend-config=bucket=${_BACKEND} -backend-config=prefix=$(TIER) -reconfigure -get=false || exit 1
        cd ../../
-     done
+     
  
 # [START tf-plan]
 - id: 'tf plan'
@@ -58,11 +57,12 @@ steps:
      do
        cd ${_PROJECT}/${_ENVDIR}  
        echo ""
-       echo "*************** TERRAFORM INIT ******************"
+       echo "*************** TERRAFORM PLAN ******************"
        echo "******* For environment tfvar file: ${tfvars} ********"
        echo "*************************************************"
         
-       # TODO: Generate the correct terraform plan command using backend, tfvars file, etc. and saving output to file for use in next stage ?
+       # ./terraform plan -var-file onedirect-nonprod.tfvars -out /workspace/onedirect-nonprod-projects-jw-ecp-cb.tfstate -parallelism=50
+
        terraform plan goes here|| exit 1
        cd ../../
      done

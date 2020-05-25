@@ -20,18 +20,14 @@ steps:
   - '-c'
   - | 
       echo "***********************"
-      echo "$BRANCH_NAME"
+      echo "Running on branch: $BRANCH_NAME"
       echo "***********************"
-      echo "$_TERRAFORM_BASE"
-      echo "***********************"
-      echo "$_HEAD_BRANCH"
-      echo "***********************"
-      echo "$_BASE_BRANCH"
-      echo "***********************"
-      echo "$_HEAD_REPO_URL"
-      echo "***********************"
-      echo "$_PR_NUMBER"
-      echo "***********************"
+      echo "_PROJECT: ${_PROJECT}"
+      echo "_ENVDIR: ${_ENVDIR}"
+      echo "_RUN_TERRAFORM_APPLY: ${_RUN_TERRAFORM_APPLY}"
+      echo "_TERRAFORM_VERSION: ${_TERRAFORM_VERSION}"
+      echo "_GCP_ORG: ${_GCP_ORG}"
+      echo "_BACKEND: ${_BACKEND}"
 
       
 - id: 'say hi'
@@ -44,3 +40,5 @@ steps:
       pwd
       ls -la
       df -h
+      echo $PATH
+      which terraform
