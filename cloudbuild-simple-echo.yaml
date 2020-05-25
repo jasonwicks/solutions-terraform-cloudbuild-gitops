@@ -28,6 +28,7 @@ steps:
       echo "_TERRAFORM_VERSION: ${_TERRAFORM_VERSION}"
       echo "_GCP_ORG: ${_GCP_ORG}"
       echo "_BACKEND: ${_BACKEND}"
+      echo "COMMIT: ${SHORT_SHA}"
 
       
 - id: 'say hi'
