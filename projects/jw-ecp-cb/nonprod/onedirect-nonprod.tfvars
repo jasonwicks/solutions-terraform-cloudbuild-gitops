@@ -6,7 +6,7 @@ suffix = "nonprod"
 folder_id = "770558290518"
 
 is_prod = 0
-cloudbuild_yaml = "/cloudbuild-simple-echo.yaml"
+cloudbuild_yaml = "cloudbuild-simple-echo.yaml"
 repository = "solutions-terraform-cloudbuild-gitops"
 terraform_version = "0.11.14"
 envdir = "nonprod"
