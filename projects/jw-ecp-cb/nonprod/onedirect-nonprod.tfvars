@@ -10,3 +10,4 @@ cloudbuild_yaml = "cloudbuild-simple-echo.yaml"
 repository = "solutions-terraform-cloudbuild-gitops"
 terraform_version = "0.11.14"
 envdir = "nonprod"
+
