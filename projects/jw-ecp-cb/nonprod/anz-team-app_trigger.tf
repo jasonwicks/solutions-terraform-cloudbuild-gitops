@@ -31,7 +31,5 @@ resource "google_cloudbuild_trigger" "trigger" {
     _GCP_ORG                 = "${var.organisation}"                # GCP org - anzcom, anznpcom, onedirect
     _BACKEND                 = "anzod-tf-state-931373029707"
   }
-  build = {
-    tags = "testtag"
-  }
+
 }
