@@ -55,6 +55,7 @@ steps:
       git --version
       git log --pretty=oneline | head -10
       git remote -v
+      git log --pretty=format:"%h - %an, %ar : %s" | head -5
       git status
       git branch
       echo "running: git diff-tree --no-commit-id --name-only -r ${SHORT_SHA}"
