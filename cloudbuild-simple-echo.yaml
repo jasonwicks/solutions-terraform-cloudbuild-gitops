@@ -52,10 +52,11 @@ steps:
       which terraform
       echo "start git output"
       which git
+      git --version
       git log --pretty=oneline | head -10
-            git -h
       git remote -v
       git status
+      git branch
       echo "running: git diff-tree --no-commit-id --name-only -r ${SHORT_SHA}"
       git diff-tree --no-commit-id --name-only -r ${SHORT_SHA} 2>&1
       echo "Completed git output"
